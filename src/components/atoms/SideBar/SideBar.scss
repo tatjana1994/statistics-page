@@ -1,0 +1,40 @@
+@import "../../../colors.scss";
+
+.sidebar-container {
+  background-color: $white;
+  min-width: 200px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  .sidebar-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding-top: 150px;
+    height: 100%;
+  }
+  .item-wrapper {
+    display: flex;
+    align-items: center;
+    height: 60px;
+
+    &.isLast {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+    }
+  }
+  .item-wrapper:hover {
+    cursor: pointer;
+    background-color: $lightBlue100;
+    border-right: 6px solid $primaryColor;
+  }
+  .item-icon {
+    padding: 0 15px;
+  }
+
+  .item-title {
+    color: $primaryColor;
+    font-weight: bold;
+  }
+}

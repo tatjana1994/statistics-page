@@ -1,0 +1,43 @@
+@import "../../../colors.scss";
+
+.search-container {
+  display: flex;
+  width: 425px;
+  position: relative;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  .input-style {
+    min-width: 425px;
+    padding-left: 16px;
+    height: 45px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    border: none;
+    box-shadow: rgba(211, 216, 237, 1) 0px 13px 27px -5px, rgba(211, 216, 237, 1) 0px 8px 16px -8px;
+    background-color: $grey020;
+    color: #3c3835;
+    ::placeholder {
+      font-size: 14px;
+      color: $grey010;
+      line-height: 20px;
+    }
+  }
+  .input-style:focus {
+    outline: none;
+    box-shadow: rgba(211, 216, 237, 1) 0px 13px 27px -5px, rgba(211, 216, 237, 1) 0px 8px 16px -8px;
+    background-color: $grey030;
+    color: $grey080;
+  }
+  .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 16px;
+  }
+  .label {
+    padding-bottom: 4px;
+    font-size: 14px;
+    color: $grey080;
+  }
+}
