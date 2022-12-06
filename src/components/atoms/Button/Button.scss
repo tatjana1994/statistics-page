@@ -1,0 +1,22 @@
+@import "../../../colors.scss";
+
+.button-container {
+  margin-top: 20px;
+  .button {
+    background-color: $primaryColor;
+    min-width: 425px;
+    height: 45px;
+    border-radius: 6px;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: none;
+    // box-shadow: rgba(211, 216, 237, 1) 0px 13px 27px -5px, rgba(211, 216, 237, 1) 0px 8px 16px -8px;
+  }
+
+  &.disabled {
+    button {
+      opacity: 0.1;
+      pointer-events: none;
+    }
+  }
+}

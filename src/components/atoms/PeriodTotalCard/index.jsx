@@ -1,16 +1,17 @@
 import "./PeriodTotalCard.scss"
 
+import PropTypes from "prop-types"
 import React from "react"
 
 import SvgIcon from "../SvgIcon"
 
-const PeriodTotalCard = () => {
+const PeriodTotalCard = ({ title, date, value, percentage }) => {
   return (
     <div className="total-card-container">
       <div className="info-box-wrapper">
         <div>
-          <div className="total-card-title">Order Received</div>
-          <div className="total-card-from">From July 2020</div>
+          <div className="total-card-title">{title}</div>
+          <div className="total-card-from">From {date}</div>
         </div>
         <SvgIcon
           className="icon-style"
@@ -21,14 +22,28 @@ const PeriodTotalCard = () => {
         />
       </div>
       <div className="value-box-wrapper">
-        <div className="value">2051</div>
+        <div className="value">{value}</div>
         <div className="value-percentage-wrapper">
           <SvgIcon icon="arrow-trend-up" fill="#20b945" />
-          <div className="value-percentage">10%</div>
+          <div className="value-percentage">{percentage}%</div>
         </div>
       </div>
     </div>
   )
+}
+
+PeriodTotalCard.propTypes = {
+  title: PropTypes.string,
+  date: PropTypes.string,
+  value: PropTypes.number,
+  percentage: PropTypes.number,
+}
+
+PeriodTotalCard.defaultProps = {
+  title: "",
+  date: "",
+  value: 0,
+  percentage: 0,
 }
 
 export default PeriodTotalCard
