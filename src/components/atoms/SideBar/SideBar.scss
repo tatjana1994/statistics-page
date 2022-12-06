@@ -17,11 +17,14 @@
     display: flex;
     align-items: center;
     height: 60px;
-
     &.isLast {
       position: absolute;
       bottom: 30px;
       width: 100%;
+    }
+    &.active {
+      background-color: $white;
+      border-right: 6px solid $primaryColor;
     }
   }
   .item-wrapper:hover {
@@ -29,6 +32,7 @@
     background-color: $lightBlue100;
     border-right: 6px solid $primaryColor;
   }
+
   .item-icon {
     padding: 0 15px;
   }

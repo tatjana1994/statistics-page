@@ -1,0 +1,12 @@
+@import "../../../colors.scss";
+
+.loading-container {
+  .loading-label {
+    padding-left: 5px;
+    color: $white;
+  }
+
+  .loading-image {
+    vertical-align: -5px;
+  }
+}

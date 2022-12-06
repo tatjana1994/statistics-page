@@ -1,0 +1,49 @@
+@import "../../../colors.scss";
+
+.seller-page-container {
+  width: calc(100vw - 200px);
+  padding: 0px 20px 20px 20px;
+  min-height: calc(100vh - 100px);
+  .children-wrapper {
+    display: flex;
+  }
+  .seller-info-container {
+    display: flex;
+    background-color: white;
+    width: 100%;
+    border-radius: 6px;
+    box-shadow: rgba(211, 216, 237, 1) 0px 13px 27px -5px, rgba(211, 216, 237, 1) 0px 8px 16px -8px;
+    padding: 40px;
+    margin-bottom: 40px;
+  }
+  .seller-info-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .seller-image {
+    width: 120px;
+    height: 120px;
+    margin-right: 40px;
+    img {
+      border-radius: 50%;
+      border: 1px solid gray;
+    }
+  }
+  .title {
+    padding-bottom: 10px;
+    font-size: 14px;
+    color: $lightGrey;
+  }
+  .info {
+    font-size: 18px;
+    color: $grey050;
+  }
+  .period-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
