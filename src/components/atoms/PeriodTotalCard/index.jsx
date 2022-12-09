@@ -5,7 +5,7 @@ import React from "react"
 
 import SvgIcon from "../SvgIcon"
 
-const PeriodTotalCard = ({ title, date, value, percentage }) => {
+const PeriodTotalCard = ({ title, date, value, percentage, valueColor }) => {
   return (
     <div className="total-card-container">
       <div className="info-box-wrapper">
@@ -22,10 +22,23 @@ const PeriodTotalCard = ({ title, date, value, percentage }) => {
         />
       </div>
       <div className="value-box-wrapper">
-        <div className="value">{value}</div>
+        <div style={{ color: valueColor }} className="value">
+          {value}
+        </div>
         <div className="value-percentage-wrapper">
-          <SvgIcon icon="arrow-trend-up" fill="#20b945" />
-          <div className="value-percentage">{percentage}%</div>
+          {percentage > 0 ? (
+            <>
+              <SvgIcon icon="arrow-trend-up" fill="#20b945" />
+              <div className="value-percentage">{percentage}%</div>
+            </>
+          ) : (
+            <>
+              <SvgIcon icon="arrow-trend-down" fill="#ff0000" />
+              <div style={{ color: "#ff0000" }} className="value-percentage">
+                {percentage}%
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -35,15 +48,17 @@ const PeriodTotalCard = ({ title, date, value, percentage }) => {
 PeriodTotalCard.propTypes = {
   title: PropTypes.string,
   date: PropTypes.string,
-  value: PropTypes.number,
-  percentage: PropTypes.number,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  percentage: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  valueColor: PropTypes.string,
 }
 
 PeriodTotalCard.defaultProps = {
   title: "",
   date: "",
-  value: 0,
-  percentage: 0,
+  value: "",
+  percentage: "",
+  valueColor: "",
 }
 
 export default PeriodTotalCard

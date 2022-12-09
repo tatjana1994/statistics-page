@@ -3,10 +3,16 @@
 .loading-container {
   .loading-label {
     padding-left: 5px;
-    color: $white;
+    color: $grey040;
   }
 
   .loading-image {
     vertical-align: -5px;
   }
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
 }

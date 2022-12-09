@@ -6,6 +6,7 @@ import { useNavigate } from "react-router"
 import { db } from "../../../firebase-config"
 import GridRowItem from "../../atoms/GridRowItem"
 import ImageWrapper from "../../atoms/ImageWrapper"
+import Loading from "../../atoms/Loading"
 import RowWrapper from "../../atoms/RowWrapper"
 import SvgIcon from "../../atoms/SvgIcon"
 import TextInput from "../../atoms/TextInput"
@@ -13,6 +14,8 @@ import RegularLayout from "../../layouts/RegularLayout"
 
 const SellersPage = () => {
   const [sort, setSort] = useState(undefined)
+  const [loading, setLoading] = useState(true)
+
   const navigate = useNavigate()
 
   const onSortClick = (field, direction) => {
@@ -61,6 +64,7 @@ const SellersPage = () => {
   const [filteredEmployees, setFilteredEmployees] = useState([])
 
   const fetchEmployer = async () => {
+    setLoading(true)
     const response = db.collection("/employees")
     const data = await response.get()
     setEmployees(
@@ -73,6 +77,7 @@ const SellersPage = () => {
         return { ...item.data(), id: item.id }
       }),
     )
+    setLoading(false)
   }
   useEffect(() => {
     fetchEmployer()
@@ -125,14 +130,18 @@ const SellersPage = () => {
           placeholder="Search by name"
           icon="search"
         />
-        <RowWrapper
-          headData={sellersHeadData}
-          highlightedHeadItem="All Sellers"
-          className="table-page"
-          bodyData={parseBodyData(filteredEmployees)}
-          sort={sort}
-          onRowClick={item => navigate(`/sellers/${item.id}`)}
-        />
+        {loading ? (
+          <Loading className="loading" />
+        ) : (
+          <RowWrapper
+            headData={sellersHeadData}
+            highlightedHeadItem="All Sellers"
+            className="table-page"
+            bodyData={parseBodyData(filteredEmployees)}
+            sort={sort}
+            onRowClick={item => navigate(`/sellers/${item.id}`)}
+          />
+        )}
       </div>
     </RegularLayout>
   )
