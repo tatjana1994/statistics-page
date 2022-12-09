@@ -6,6 +6,7 @@ import { useNavigate } from "react-router"
 import { db } from "../../../firebase-config"
 import GridRowItem from "../../atoms/GridRowItem"
 import ImageWrapper from "../../atoms/ImageWrapper"
+import Loading from "../../atoms/Loading"
 import RowWrapper from "../../atoms/RowWrapper"
 import SvgIcon from "../../atoms/SvgIcon"
 import TextInput from "../../atoms/TextInput"
@@ -13,6 +14,7 @@ import RegularLayout from "../../layouts/RegularLayout"
 
 const ProductsPage = () => {
   const [sort, setSort] = useState(undefined)
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   const onSortClick = (field, direction) => {
@@ -73,6 +75,7 @@ const ProductsPage = () => {
         return { ...item.data(), id: item.id }
       }),
     )
+    setLoading(false)
   }
   useEffect(() => {
     fetchProduct()
@@ -121,14 +124,18 @@ const ProductsPage = () => {
           placeholder="Search by name"
           icon="search"
         />
-        <RowWrapper
-          headData={productsHeadData}
-          highlightedHeadItem="List of Products"
-          bodyData={parseBodyData(filteredProducts)}
-          className="table-page "
-          onRowClick={item => navigate(`/products/${item.id}`)}
-          sort={sort}
-        />
+        {loading ? (
+          <Loading className="loading" />
+        ) : (
+          <RowWrapper
+            headData={productsHeadData}
+            highlightedHeadItem="List of Products"
+            bodyData={parseBodyData(filteredProducts)}
+            className="table-page "
+            onRowClick={item => navigate(`/products/${item.id}`)}
+            sort={sort}
+          />
+        )}
       </div>
     </RegularLayout>
   )

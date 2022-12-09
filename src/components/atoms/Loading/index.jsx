@@ -10,8 +10,8 @@ const Loading = ({ className, buttonLoading }) => {
     <div className={loadingClass}>
       <img
         className="loading-image"
-        width="22"
-        height="22"
+        width="40"
+        height="40"
         src="/media/loading.gif"
         alt="Loading animation"
       />

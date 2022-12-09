@@ -41,9 +41,14 @@
     font-size: 18px;
     color: $grey050;
   }
-  .period-card {
+  .seller-period-card {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    > :nth-child(1) {
+      margin-right: 20px;
+      flex: 2;
+    }
   }
 }
