@@ -9,7 +9,7 @@ const UnauthenticatedRoute = ({ children }) => {
   const token = window.localStorage.getItem("accessToken")
 
   if (token) {
-    toast.warn("aaaa", {
+    toast.warn("You have to log out first.", {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,

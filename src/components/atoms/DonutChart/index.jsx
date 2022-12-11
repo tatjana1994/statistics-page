@@ -1,18 +1,20 @@
 import "./DonutChart.scss"
 
+import PropTypes from "prop-types"
 import React from "react"
 import Chart from "react-apexcharts"
 
-const DonutChart = () => {
+const DonutChart = ({ seriesData, colors, labels }) => {
   const state = {
-    series: [24, 55],
+    series: seriesData,
 
     options: {
-      labels: ["Apple", "Mango"],
-      colors: ["#6684fe", "#ec68a7"],
+      labels,
+      colors,
       plotOptions: {
         pie: {
           donut: {
+            size: "75%",
             labels: {
               show: true,
               total: {
@@ -41,7 +43,7 @@ const DonutChart = () => {
 
   return (
     <div className="donut-chart-container">
-      <Chart options={state.options} series={state.series} type="donut" height="250px" />
+      <Chart options={state.options} series={state.series} type="donut" />
       <div className="legend-wrapper">
         {state.options.labels.map((item, index) => (
           <div key={index} className="legend-item">
@@ -55,6 +57,18 @@ const DonutChart = () => {
       </div>
     </div>
   )
+}
+
+DonutChart.propTypes = {
+  seriesData: PropTypes.instanceOf(Array),
+  labels: PropTypes.instanceOf(Array),
+  colors: PropTypes.instanceOf(Array),
+}
+
+DonutChart.defaultProps = {
+  seriesData: [],
+  labels: [],
+  colors: [],
 }
 
 export default DonutChart

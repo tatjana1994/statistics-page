@@ -2,23 +2,29 @@
 
 .chart-wrapper-container {
   display: flex;
-  width: 300px;
+  min-width: 220px;
+  max-width: 220px;
   height: 100%;
-  margin-bottom: 42px;
   background-color: $white;
   border-radius: 6px;
   flex-direction: column;
   align-items: center;
-  box-shadow: rgba(211, 216, 237, 1) 0px 13px 27px -5px, rgba(211, 216, 237, 1) 0px 8px 16px -8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   .chart-wrapper-title {
     font-size: 16px;
     font-weight: bold;
     color: $primaryColor;
-    padding: 20px 0 0 20px;
+    padding: 20px 0px 0px 0px;
+    display: flex;
+    text-align: center;
+    white-space: pre-line;
   }
   .chart-wrapper-description {
-    font-size: 12px;
-    padding: 4px 0 0 20px;
+    font-size: 10px;
+    padding: 4px 0 0 0;
+    font-weight: bold;
     color: $lightGrey;
+    display: flex;
   }
 }

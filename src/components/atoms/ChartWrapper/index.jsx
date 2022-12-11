@@ -1,17 +1,36 @@
 import "./ChartWrapper.scss"
 
+import PropTypes from "prop-types"
 import React from "react"
 
-import RadialChart from "../DonutChart"
+import DonutChart from "../DonutChart"
 
-const ChartWrapper = () => {
+const ChartWrapper = ({ seriesData, colors, title, subtitle, labels }) => {
   return (
     <div className="chart-wrapper-container">
-      <div className="chart-wrapper-title">Passengers Traffic</div>
-      <div className="chart-wrapper-description">Online and Store</div>
-      <RadialChart />
+      <div style={{ whiteSpace: "pre-line" }} className="chart-wrapper-title">
+        {title}
+      </div>
+      <div className="chart-wrapper-description">{subtitle}</div>
+      <DonutChart seriesData={seriesData} colors={colors} labels={labels} />
     </div>
   )
+}
+
+ChartWrapper.propTypes = {
+  seriesData: PropTypes.instanceOf(Array),
+  labels: PropTypes.instanceOf(Array),
+  colors: PropTypes.instanceOf(Array),
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+}
+
+ChartWrapper.defaultProps = {
+  seriesData: [],
+  labels: [],
+  colors: [],
+  title: "",
+  subtitle: "",
 }
 
 export default ChartWrapper
