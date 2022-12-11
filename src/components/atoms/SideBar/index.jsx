@@ -1,14 +1,31 @@
 import "./SideBar.scss"
 
 import classNames from "classnames"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router"
 
+import { db } from "../../../firebase-config"
+import ImageWrapper from "../ImageWrapper"
 import SvgIcon from "../SvgIcon"
 
 const SideBar = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const [user, setUser] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  const fetchUser = async () => {
+    const id = window.localStorage.getItem("uid")
+    await db
+      .collection("/users")
+      .doc(id)
+      .get()
+      .then(snapshot => setUser(snapshot.data()))
+    setLoading(false)
+  }
+  useEffect(() => {
+    fetchUser()
+  }, [])
 
   const sidebarData = [
     {
@@ -27,11 +44,6 @@ const SideBar = () => {
       link: "/products",
     },
     {
-      title: "Settings",
-      icon: <SvgIcon icon="settings" width={32} height={32} fill="#6785ff" />,
-      link: "/settings",
-    },
-    {
       title: "Logout",
       icon: <SvgIcon icon="logout" width={32} height={32} fill="#6785ff" />,
       onClick: () => {
@@ -43,6 +55,23 @@ const SideBar = () => {
 
   return (
     <div className="sidebar-container">
+      <div className="user-wrapper">
+        {!loading && (
+          <>
+            <ImageWrapper
+              image={user.image}
+              alt="product"
+              width={56}
+              height={56}
+              className="user-image"
+            />
+            <div className="user-name">
+              {user.first_name} {user.last_name}
+            </div>
+          </>
+        )}
+      </div>
+
       <div className="sidebar-wrapper">
         {sidebarData.map((item, index) => {
           const isLast = index === sidebarData.length - 1

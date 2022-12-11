@@ -24,18 +24,21 @@ const RowWrapper = ({ headData, highlightedHeadItem, className, sort, bodyData, 
       </div>
 
       {bodyData &&
-        bodyData.map((row, index) => (
-          <div
-            role="button"
-            onClick={() => onRowClick(row.rowData)}
-            key={index}
-            className="row-container"
-          >
-            {row.rowItems.map(item => {
-              return item
-            })}
-          </div>
-        ))}
+        bodyData.map((row, index) => {
+          const rowContainerClass = classNames("row-container", { isFirst: index === 0 })
+          return (
+            <div
+              role="button"
+              onClick={() => onRowClick(row.rowData)}
+              key={index}
+              className={rowContainerClass}
+            >
+              {row.rowItems.map(item => {
+                return item
+              })}
+            </div>
+          )
+        })}
     </div>
   )
 }

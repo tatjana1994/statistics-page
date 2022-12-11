@@ -3,38 +3,47 @@
   padding: 0px 20px 20px 20px;
   min-height: calc(100vh - 100px);
   display: flex;
-  .dashboard-page-wrapper {
+  flex-direction: column;
+
+  .top-row-wrapper {
     display: flex;
-    height: 100%;
-  }
-  .children-wrapper {
-    display: flex;
-  }
-  .cards-and-charts-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-  }
-  .period-card {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    > * {
+
+    > :first-child {
       margin-right: 20px;
     }
   }
-  .charts-wrapper {
+
+  .top-row-left-side-wrapper {
     display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    > :first-child {
+      margin-bottom: 20px;
+    }
+  }
+
+  .top-row-items-wrapper {
+    display: flex;
+    > * {
+      margin-right: 20px;
+    }
+
+    :last-child {
+      margin-right: 0px;
+    }
+  }
+
+  .bottom-row-wrapper {
     margin-top: 20px;
-    height: 100%;
+    display: flex;
+
     > * {
       margin-right: 20px;
     }
-  }
-  .charts {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 12px;
+
+    > :last-child {
+      margin-right: 0px;
+    }
   }
 }

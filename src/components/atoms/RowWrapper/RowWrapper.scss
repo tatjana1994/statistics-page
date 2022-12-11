@@ -1,17 +1,16 @@
 @import "../../../colors.scss";
 
 .table-container {
-  padding-right: 20px;
+  flex: 1;
+  // padding-right: 20px;
   &.table-page {
     padding-right: 0px;
   }
   .head-container {
     width: 100%;
     padding: 0px 20px;
-    height: 10px;
     align-items: center;
     background-color: $lightBlue050;
-    margin-top: 20px;
     display: grid;
     grid-auto-flow: column;
     grid-template-columns:
@@ -22,7 +21,8 @@
       20px;
   }
   .row-container {
-    box-shadow: rgba(211, 216, 237, 1) 0px 13px 27px -5px, rgba(211, 216, 237, 1) 0px 8px 16px -8px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     display: grid;
     padding: 0px 20px;
     grid-auto-flow: column;
@@ -37,9 +37,11 @@
     height: 50px;
     border-radius: 6px;
     margin-top: 15px;
-    margin-bottom: 10px;
     align-items: center;
     cursor: pointer;
+    &.isFirst {
+      margin-top: 10px;
+    }
   }
   .seller-image {
     width: 46px;

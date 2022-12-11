@@ -1,17 +1,14 @@
 import "./BarChart.scss"
 
+import PropTypes from "prop-types"
 import React from "react"
 import ReactApexChart from "react-apexcharts"
 
-const BarChart = () => {
+const BarChart = ({ seriesData, categories, titleText, subtitleText, titleColor, colors }) => {
   const state = {
-    series: [
-      {
-        name: "$",
-        data: [10, 41, 35, 51, 49, 62, 69],
-      },
-    ],
+    series: seriesData,
     options: {
+      colors,
       markers: {
         size: 1,
       },
@@ -20,8 +17,6 @@ const BarChart = () => {
         height: 240,
         width: "100%",
         type: "line",
-        borderRadius: 6,
-        style: {},
 
         zoom: {
           enabled: false,
@@ -37,18 +32,18 @@ const BarChart = () => {
       },
 
       title: {
-        text: "Analytics",
+        text: titleText,
         align: "left",
         offsetX: 10,
         offsetY: 8,
         style: {
           fontSize: "14px",
           fontWeight: "bold",
-          color: "#6785ff",
+          color: titleColor,
         },
       },
       subtitle: {
-        text: "Sales Summary",
+        text: subtitleText,
         align: "left",
         offsetX: 10,
         offsetY: 25,
@@ -66,15 +61,33 @@ const BarChart = () => {
         },
       },
       xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        categories,
       },
     },
   }
   return (
-    <div className="bar-chart-container ">
+    <div className="bar-chart-container">
       <ReactApexChart options={state.options} series={state.series} type="bar" height="100%" />
     </div>
   )
+}
+
+BarChart.propTypes = {
+  seriesData: PropTypes.instanceOf(Array),
+  categories: PropTypes.instanceOf(Array),
+  subtitleText: PropTypes.string,
+  titleText: PropTypes.string,
+  colors: PropTypes.instanceOf(Array),
+  titleColor: PropTypes.string,
+}
+
+BarChart.defaultProps = {
+  seriesData: [],
+  categories: [],
+  subtitleText: "",
+  titleText: "",
+  colors: [],
+  titleColor: "",
 }
 
 export default BarChart

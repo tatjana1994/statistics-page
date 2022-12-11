@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 import { useParams } from "react-router"
 
 import { db } from "../../../firebase-config"
+import BarChart from "../../atoms/BarChart"
 import ImageWrapper from "../../atoms/ImageWrapper"
 import LineChart from "../../atoms/LineChart"
 import Loading from "../../atoms/Loading"
@@ -80,11 +81,11 @@ const SellerPage = () => {
               valueColor="#ec68a7"
             />
             <LineChart
-              data={extendedEmployees.earningsPerMonth}
-              name="Earned per month"
+              seriesData={[{ name: "Earned per month", data: extendedEmployees.earningsPerMonth }]}
+              categories={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"]}
               titleText="Analysis earnings"
               subtitle="Total earnings"
-              lineColor="#ec68a7"
+              colors={["#ec68a7"]}
               titleColor="#ec68a7"
             />
           </div>
@@ -97,25 +98,14 @@ const SellerPage = () => {
               valueColor="#f39005"
               percentage={extendedEmployees.percentageOfTotalSold}
             />
-            <LineChart
-              data={extendedEmployees.soldPerMonth}
+            <BarChart
+              seriesData={[{ name: "Sold per month", data: extendedEmployees.soldPerMonth }]}
+              categories={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"]}
+              colors={["#f39005"]}
               titleText="Analysis sales"
-              subtitle="Total sales"
-              name="Sold per month"
-              lineColor="#f39005"
+              subtitleText="Total sales"
               titleColor="#f39005"
             />
-          </div>
-
-          <div className="seller-period-card">
-            <PeriodTotalCard
-              title="Total Earned"
-              value={`$${employees.total_profit}`}
-              subtitle="Total earnings"
-              lineColor="#CB1C8D"
-              titleColor="#CB1C8D"
-            />
-            {/* <LineChart /> */}
           </div>
         </div>
       )}

@@ -26,11 +26,10 @@ const LoginPage = () => {
   const signIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
-        // Signed in
         const { user } = userCredential
-
         if (user) {
           window.localStorage.setItem("accessToken", user.accessToken)
+          window.localStorage.setItem("uid", user.uid)
           navigate("/")
         }
       })

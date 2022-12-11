@@ -4,17 +4,12 @@ import PropTypes from "prop-types"
 import React from "react"
 import ReactApexChart from "react-apexcharts"
 
-const LineChart = ({ data, name, subtitle, titleText, lineColor, titleColor }) => {
+const LineChart = ({ seriesData, subtitle, titleText, titleColor, categories, colors }) => {
   const state = {
-    series: [
-      {
-        name,
-        data,
-      },
-    ],
+    series: seriesData,
 
     options: {
-      colors: [lineColor],
+      colors,
       markers: {
         size: 0.5,
       },
@@ -24,9 +19,6 @@ const LineChart = ({ data, name, subtitle, titleText, lineColor, titleColor }) =
         height: 120,
         width: "100%",
         type: "line",
-        borderRadius: 6,
-        style: {},
-
         zoom: {
           enabled: false,
         },
@@ -73,7 +65,7 @@ const LineChart = ({ data, name, subtitle, titleText, lineColor, titleColor }) =
         },
       },
       xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        categories,
       },
     },
   }
@@ -85,20 +77,20 @@ const LineChart = ({ data, name, subtitle, titleText, lineColor, titleColor }) =
 }
 
 LineChart.propTypes = {
-  data: PropTypes.instanceOf(Array),
+  seriesData: PropTypes.instanceOf(Array),
+  categories: PropTypes.instanceOf(Array),
   subtitle: PropTypes.string,
   titleText: PropTypes.string,
-  name: PropTypes.string,
-  lineColor: PropTypes.string,
+  colors: PropTypes.instanceOf(Array),
   titleColor: PropTypes.string,
 }
 
 LineChart.defaultProps = {
-  data: [],
+  seriesData: [],
+  categories: [],
   subtitle: "",
   titleText: "",
-  name: "",
-  lineColor: "",
+  colors: [],
   titleColor: "",
 }
 
