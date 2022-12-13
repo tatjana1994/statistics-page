@@ -1,9 +1,10 @@
 import "./SellerPage.scss"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router"
 
-import { db } from "../../../firebase-config"
+import { getExtendedSeller, getSeller } from "../../../redux/sellers/sellersActions"
 import BarChart from "../../atoms/BarChart"
 import ImageWrapper from "../../atoms/ImageWrapper"
 import LineChart from "../../atoms/LineChart"
@@ -12,26 +13,19 @@ import PeriodTotalCard from "../../atoms/PeriodTotalCard"
 import RegularLayout from "../../layouts/RegularLayout"
 
 const SellerPage = () => {
-  const [employees, setEmployees] = useState("")
-  const [extendedEmployees, setExtendedEmployees] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [selectedSeller, extendedSeller, loading] = useSelector(({ sellers }) => [
+    sellers.selectedSeller,
+    sellers.extendedSeller,
+    sellers.loading,
+  ])
+
+  const dispatch = useDispatch()
+
   const { id } = useParams()
 
-  const fetchEmployer = async () => {
-    await db
-      .collection("/employees")
-      .doc(id)
-      .get()
-      .then(snapshot => setEmployees(snapshot.data()))
-    await db
-      .collection("/extended_employees")
-      .doc(id)
-      .get()
-      .then(snapshot => setExtendedEmployees(snapshot.data()))
-    setLoading(false)
-  }
   useEffect(() => {
-    fetchEmployer()
+    dispatch(getSeller(id))
+    dispatch(getExtendedSeller(id))
   }, [])
 
   const totalEarned = array => {
@@ -51,7 +45,7 @@ const SellerPage = () => {
         <div className="seller-page-container">
           <div className="seller-info-container">
             <ImageWrapper
-              image={employees.avatar}
+              image={selectedSeller.avatar}
               alt="seller"
               width={120}
               height={120}
@@ -60,28 +54,28 @@ const SellerPage = () => {
             <div className="seller-info-wrapper">
               <div className="info">
                 <div className="title">Name: </div>
-                {employees.first_name} {employees.last_name}
+                {selectedSeller.first_name} {selectedSeller.last_name}
               </div>
               <div className="info">
-                <div className="title">Phone number:</div> {employees.phone_number}
+                <div className="title">Phone number:</div> {selectedSeller.phone_number}
               </div>
 
               <div className="info">
-                <div className="title">Email:</div> {employees.email_address}
+                <div className="title">Email:</div> {selectedSeller.email_address}
               </div>
             </div>
           </div>
 
           <div className="seller-period-card">
             <PeriodTotalCard
-              date={extendedEmployees.date}
-              percentage={extendedEmployees.percentageOfTotalEarned}
+              date={extendedSeller.date}
+              percentage={extendedSeller.percentageOfTotalEarned}
               title="Total Earned"
-              value={`$${totalEarned(extendedEmployees.earningsPerMonth)}`}
+              value={`$${totalEarned(extendedSeller.earningsPerMonth)}`}
               valueColor="#ec68a7"
             />
             <LineChart
-              seriesData={[{ name: "Earned per month", data: extendedEmployees.earningsPerMonth }]}
+              seriesData={[{ name: "Earned per month", data: extendedSeller.earningsPerMonth }]}
               categories={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"]}
               titleText="Analysis earnings"
               subtitle="Total earnings"
@@ -92,14 +86,14 @@ const SellerPage = () => {
 
           <div className="seller-period-card">
             <PeriodTotalCard
-              date={extendedEmployees.date}
+              date={extendedSeller.date}
               title="Total Sold"
-              value={totalEarned(extendedEmployees.soldPerMonth)}
+              value={totalEarned(extendedSeller.soldPerMonth)}
               valueColor="#f39005"
-              percentage={extendedEmployees.percentageOfTotalSold}
+              percentage={extendedSeller.percentageOfTotalSold}
             />
             <BarChart
-              seriesData={[{ name: "Sold per month", data: extendedEmployees.soldPerMonth }]}
+              seriesData={[{ name: "Sold per month", data: extendedSeller.soldPerMonth }]}
               categories={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"]}
               colors={["#f39005"]}
               titleText="Analysis sales"

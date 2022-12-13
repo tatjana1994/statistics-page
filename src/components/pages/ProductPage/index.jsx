@@ -1,35 +1,27 @@
 import "./ProductPage.scss"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router"
 
-import { db } from "../../../firebase-config"
+import { getExtendedProduct, getProduct } from "../../../redux/products/productsActions"
 import ImageWrapper from "../../atoms/ImageWrapper"
 import Loading from "../../atoms/Loading"
 import RegularLayout from "../../layouts/RegularLayout"
 
 const SellerPage = () => {
-  const [products, setProducts] = useState("")
-  const [extendedProducts, setExtendedProducts] = useState("")
-  const [loading, setLoading] = useState(true)
+  const [selectedProduct, extendedProduct, loading] = useSelector(({ products }) => [
+    products.selectedProduct,
+    products.extendedProduct,
+    products.loading,
+  ])
   const { id } = useParams()
 
-  const fetchProduct = async () => {
-    await db
-      .collection("/products")
-      .doc(id)
-      .get()
-      .then(snapshot => setProducts(snapshot.data()))
-    await db
-      .collection("/extended_product")
-      .doc(id)
-      .get()
-      .then(snapshot => setExtendedProducts(snapshot.data()))
-    setLoading(false)
-  }
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    fetchProduct()
+    dispatch(getProduct(id))
+    dispatch(getExtendedProduct(id))
   }, [])
 
   return (
@@ -39,10 +31,10 @@ const SellerPage = () => {
       ) : (
         <div className="product-page-container">
           <div className="product-page-wrapper ">
-            <div className="product-name">{products.name}</div>
+            <div className="product-name">{selectedProduct?.name}</div>
             <div className="image-and-description-wrapper">
               <ImageWrapper
-                image={products.image}
+                image={selectedProduct?.image}
                 alt="product"
                 width={280}
                 height={220}
@@ -50,32 +42,32 @@ const SellerPage = () => {
               />
               <div className="description">
                 <div className="title">Description:</div>
-                {extendedProducts.description}
+                {extendedProduct?.description}
               </div>
 
-              <div className="price">${products.price}</div>
+              <div className="price">${selectedProduct?.price}</div>
             </div>
             <div className="title top">Specifications:</div>
             <div className="titles-wrapper">
               <div className="info-wrapper">
-                Operating system:<div className="info">{extendedProducts.operating_system}</div>
+                Operating system:<div className="info">{extendedProduct.operating_system}</div>
               </div>
               <div className="info-wrapper">
-                Processor:<div className="info">{extendedProducts.processor}</div>
+                Processor:<div className="info">{extendedProduct.processor}</div>
               </div>
               <div className="info-wrapper">
-                Memory:<div className="info">{extendedProducts.memory}GB</div>
+                Memory:<div className="info">{extendedProduct.memory}GB</div>
               </div>
             </div>
             <div className="titles-wrapper">
               <div className="info-wrapper">
-                Storage:<div className="info">{extendedProducts.storage}</div>
+                Storage:<div className="info">{extendedProduct.storage}</div>
               </div>
               <div className="info-wrapper">
-                Display:<div className="info">{extendedProducts?.display}</div>
+                Display:<div className="info">{extendedProduct?.display}</div>
               </div>
               <div className="info-wrapper">
-                Graphics:<div className="info">{extendedProducts.graphics}</div>
+                Graphics:<div className="info">{extendedProduct.graphics}</div>
               </div>
             </div>
           </div>

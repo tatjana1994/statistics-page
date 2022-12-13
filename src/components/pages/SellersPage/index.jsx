@@ -1,9 +1,10 @@
 import "./SellersPage.scss"
 
 import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 
-import { db } from "../../../firebase-config"
+import { filterSellers, getSellers, sortSellers } from "../../../redux/sellers/sellersActions"
 import GridRowItem from "../../atoms/GridRowItem"
 import ImageWrapper from "../../atoms/ImageWrapper"
 import Loading from "../../atoms/Loading"
@@ -13,8 +14,13 @@ import TextInput from "../../atoms/TextInput"
 import RegularLayout from "../../layouts/RegularLayout"
 
 const SellersPage = () => {
+  const [filteredSellers, loading] = useSelector(({ sellers }) => [
+    sellers.filteredSellers,
+    sellers.loading,
+  ])
+
+  const dispatch = useDispatch()
   const [sort, setSort] = useState(undefined)
-  const [loading, setLoading] = useState(true)
 
   const navigate = useNavigate()
 
@@ -59,65 +65,18 @@ const SellersPage = () => {
       }
     })
   }
-  const [employees, setEmployees] = useState([])
   const [search, setSearch] = useState("")
-  const [filteredEmployees, setFilteredEmployees] = useState([])
 
-  const fetchEmployer = async () => {
-    setLoading(true)
-    const response = db.collection("/employees")
-    const data = await response.get()
-    setEmployees(
-      data.docs.map(item => {
-        return { ...item.data(), id: item.id }
-      }),
-    )
-    setFilteredEmployees(
-      data.docs.map(item => {
-        return { ...item.data(), id: item.id }
-      }),
-    )
-    setLoading(false)
-  }
   useEffect(() => {
-    fetchEmployer()
+    dispatch(getSellers())
   }, [])
 
-  const searchByName = data => {
-    setFilteredEmployees(
-      data.filter(employee => {
-        return (
-          employee.first_name.toLowerCase().includes(search.toLowerCase()) ||
-          employee.last_name.toLowerCase().includes(search.toLowerCase())
-        )
-      }),
-    )
-  }
-
   useEffect(() => {
-    searchByName(sort ? filteredEmployees : employees)
+    dispatch(filterSellers(sort, search))
   }, [search])
 
-  const sortData = async sortBy => {
-    if (!sortBy) {
-      setFilteredEmployees(employees)
-    } else {
-      const response = db.collection("/employees").orderBy(sortBy.field, sortBy.direction)
-      const data = await response.get()
-      const parsed = data.docs.map(item => {
-        return { ...item.data(), id: item.id }
-      })
-
-      if (search) {
-        searchByName(parsed)
-      } else {
-        setFilteredEmployees(parsed)
-      }
-    }
-  }
-
   useEffect(() => {
-    sortData(sort)
+    dispatch(sortSellers(sort, search))
   }, [sort])
 
   return (
@@ -137,7 +96,7 @@ const SellersPage = () => {
             headData={sellersHeadData}
             highlightedHeadItem="All Sellers"
             className="table-page"
-            bodyData={parseBodyData(filteredEmployees)}
+            bodyData={parseBodyData(filteredSellers)}
             sort={sort}
             onRowClick={item => navigate(`/sellers/${item.id}`)}
           />
