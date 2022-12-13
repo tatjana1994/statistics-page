@@ -1,8 +1,12 @@
 import "./DashboardPage.scss"
 
-import React, { useEffect, useState } from "react"
+import _ from "lodash"
+import React, { useEffect, useMemo } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
-import { db } from "../../../firebase-config"
+import { getProducts } from "../../../redux/products/productsActions"
+import { getSellers } from "../../../redux/sellers/sellersActions"
+import { getTotals } from "../../../redux/totals/totalsActions"
 import BarChart from "../../atoms/BarChart"
 import ChartWrapper from "../../atoms/ChartWrapper"
 import GridRowItem from "../../atoms/GridRowItem"
@@ -15,51 +19,27 @@ import RowWrapper from "../../atoms/RowWrapper"
 import RegularLayout from "../../layouts/RegularLayout"
 
 const DashboardPage = () => {
-  const [employees, setEmployees] = useState([])
-  const [products, setProducts] = useState([])
-  const [totals, setTotals] = useState([])
-  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
 
-  const fetchEmployer = async () => {
-    const response = db.collection("/employees")
-    const data = await response.get()
-    setEmployees(
-      data.docs.map(item => {
-        return { ...item.data(), id: item.id }
-      }),
-    )
-    setLoading(false)
-  }
-  useEffect(() => {
-    fetchEmployer()
-  }, [])
+  const [allProducts, allSellers, allTotals, productsLoading, sellersLoading, totalsLoading] =
+    useSelector(({ products, sellers, totals }) => [
+      products.allProducts,
+      sellers.allSellers,
+      totals.allTotals,
+      products.loading,
+      sellers.loading,
+      totals.loading,
+    ])
 
-  const fetchProduct = async () => {
-    const response = db.collection("/products")
-    const data = await response.get()
-    setProducts(
-      data.docs.map(item => {
-        return { ...item.data(), id: item.id }
-      }),
-    )
-    setLoading(false)
-  }
-  useEffect(() => {
-    fetchProduct()
-  }, [])
+  const loading = useMemo(
+    () => productsLoading || sellersLoading || totalsLoading,
+    [productsLoading, sellersLoading, totalsLoading],
+  )
 
-  const fetchTotals = async () => {
-    const response = db.collection("/totals")
-    const data = await response.get()
-    setTotals(
-      data.docs.map(item => {
-        return item.data()
-      }),
-    )
-    setLoading(false)
-  }
   useEffect(() => {
-    fetchTotals()
+    dispatch(getProducts())
+    dispatch(getSellers())
+    dispatch(getTotals())
   }, [])
 
   const sellersHeadData = [
@@ -118,8 +98,11 @@ const DashboardPage = () => {
     })
   }
 
-  const topFiveSellers = employees.sort((a, b) => b.items_sold - a.items_sold).slice(0, 5)
-  const topFiveProducts = products.sort((a, b) => b.sold_items - a.sold_items).slice(0, 5)
+  const clonedSellers = _.cloneDeep(allSellers)
+  const clonedProducts = _.cloneDeep(allProducts)
+
+  const topFiveSellers = clonedSellers.sort((a, b) => b.items_sold - a.items_sold).slice(0, 5)
+  const topFiveProducts = clonedProducts.sort((a, b) => b.sold_items - a.sold_items).slice(0, 5)
 
   const getFiveItems = (data, field) => {
     return data.map(item => item[field])
@@ -136,27 +119,27 @@ const DashboardPage = () => {
               <div className="top-row-items-wrapper">
                 <PeriodTotalCard
                   title="Total Earnings"
-                  value={`$${totals[0]?.total_earnings}`}
-                  date={totals[0]?.date}
-                  percentage={totals[0]?.total_earning_percentage}
+                  value={`$${allTotals[0]?.total_earnings}`}
+                  date={allTotals[0]?.date}
+                  percentage={allTotals[0]?.total_earning_percentage}
                 />
                 <PeriodTotalCard
                   title="Total Sales"
-                  date={totals[0]?.date}
-                  value={totals[0]?.total_sales}
-                  percentage={totals[0]?.total_sales_percentage}
+                  date={allTotals[0]?.date}
+                  value={allTotals[0]?.total_sales}
+                  percentage={allTotals[0]?.total_sales_percentage}
                 />
                 <PeriodTotalCard
                   title="Total Online Sales"
-                  date={totals[0]?.date}
-                  value={totals[0]?.total_online_sales}
-                  percentage={totals[0]?.total_online_sales_percentage}
+                  date={allTotals[0]?.date}
+                  value={allTotals[0]?.total_online_sales}
+                  percentage={allTotals[0]?.total_online_sales_percentage}
                 />
                 <PeriodTotalCard
                   title="Total Store Sales"
-                  date={totals[0]?.date}
-                  value={totals[0]?.total_store_sales}
-                  percentage={totals[0]?.total_store_sales_percentage}
+                  date={allTotals[0]?.date}
+                  value={allTotals[0]?.total_store_sales}
+                  percentage={allTotals[0]?.total_store_sales_percentage}
                 />
               </div>
 
@@ -167,7 +150,9 @@ const DashboardPage = () => {
                   subtitle="From Jul - Oct 2022"
                   colors={["#6785ff"]}
                   categories={["Jul", "Aug", "Sep", "Oct"]}
-                  seriesData={[{ data: totals[0]?.total_earnings_monthly, name: "Total Earning" }]}
+                  seriesData={[
+                    { data: allTotals[0]?.total_earnings_monthly, name: "Total Earning" },
+                  ]}
                 />
                 <BarChart
                   titleText="Total Online Sales"
@@ -175,7 +160,7 @@ const DashboardPage = () => {
                   colors={["#eaaa53"]}
                   subtitleText="From Jul - Oct 2022"
                   seriesData={[
-                    { data: totals[0]?.total_online_sales_monthly, name: "Total Online Sale" },
+                    { data: allTotals[0]?.total_online_sales_monthly, name: "Total Online Sale" },
                   ]}
                   categories={["Jul", "Aug", "Sep", "Oct"]}
                 />
@@ -183,11 +168,11 @@ const DashboardPage = () => {
             </div>
 
             <ChartWrapper
-              seriesData={[totals[0]?.total_online_earning, totals[0]?.total_store_earning]}
+              seriesData={[allTotals[0]?.total_online_earning, allTotals[0]?.total_store_earning]}
               colors={["#6684fe", "#ec68a7"]}
               title={`Total Earnings  
               Online/Store`}
-              subtitle={`From ${totals[0]?.date}`}
+              subtitle={`From ${allTotals[0]?.date}`}
               labels={["Online", "Store"]}
             />
           </div>
@@ -199,7 +184,7 @@ const DashboardPage = () => {
               subtitle="From Jul - Oct 2022"
               colors={["#20b945"]}
               categories={["Jul", "Aug", "Sep", "Oct"]}
-              seriesData={[{ data: totals[0]?.total_sales_monthly, name: "Total Sale" }]}
+              seriesData={[{ data: allTotals[0]?.total_sales_monthly, name: "Total Sale" }]}
             />
             <BarChart
               titleText="Total Store Sales"
@@ -207,17 +192,17 @@ const DashboardPage = () => {
               colors={["#c4292e"]}
               subtitleText="From Jul - Oct 2022"
               seriesData={[
-                { data: totals[0]?.total_store_sales_monthly, name: "Total Store Sale" },
+                { data: allTotals[0]?.total_store_sales_monthly, name: "Total Store Sale" },
               ]}
               categories={["Jul", "Aug", "Sep", "Oct"]}
             />
 
             <ChartWrapper
-              seriesData={[totals[0]?.total_online_sales, totals[0]?.total_store_sales]}
+              seriesData={[allTotals[0]?.total_online_sales, allTotals[0]?.total_store_sales]}
               colors={["#E65F5C", "#B5D99C"]}
               title={`Total Sales 
                        Online/Store`}
-              subtitle={`From ${totals[0]?.date}`}
+              subtitle={`From ${allTotals[0]?.date}`}
               labels={["Online", "Store"]}
             />
           </div>
@@ -232,7 +217,7 @@ const DashboardPage = () => {
               seriesData={getFiveItems(topFiveSellers, "total_profit")}
               labels={getFiveItems(topFiveSellers, "first_name")}
               title="Best Sellers"
-              subtitle={totals[0]?.date}
+              subtitle={allTotals[0]?.date}
             />
           </div>
 
@@ -247,7 +232,7 @@ const DashboardPage = () => {
               seriesData={getFiveItems(topFiveProducts, "sold_items")}
               labels={getFiveItems(topFiveProducts, "name")}
               title="Best Selling Products"
-              subtitle={totals[0]?.date}
+              subtitle={allTotals[0]?.date}
             />
           </div>
         </div>

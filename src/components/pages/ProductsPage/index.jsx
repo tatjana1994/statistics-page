@@ -1,9 +1,10 @@
 import "./ProductsPage.scss"
 
 import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 
-import { db } from "../../../firebase-config"
+import { filterProducts, getProducts, sortProducts } from "../../../redux/products/productsActions"
 import GridRowItem from "../../atoms/GridRowItem"
 import ImageWrapper from "../../atoms/ImageWrapper"
 import Loading from "../../atoms/Loading"
@@ -13,9 +14,14 @@ import TextInput from "../../atoms/TextInput"
 import RegularLayout from "../../layouts/RegularLayout"
 
 const ProductsPage = () => {
+  const [filteredProducts, loading] = useSelector(({ products }) => [
+    products.filteredProducts,
+    products.loading,
+  ])
   const [sort, setSort] = useState(undefined)
-  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+
+  const dispatch = useDispatch()
 
   const onSortClick = (field, direction) => {
     if (direction === "none") {
@@ -58,60 +64,18 @@ const ProductsPage = () => {
       }
     })
   }
-  const [products, setProducts] = useState([])
   const [search, setSearch] = useState("")
-  const [filteredProducts, setFilteredProducts] = useState([])
 
-  const fetchProduct = async () => {
-    const response = db.collection("/products")
-    const data = await response.get()
-    setProducts(
-      data.docs.map(item => {
-        return { ...item.data(), id: item.id }
-      }),
-    )
-    setFilteredProducts(
-      data.docs.map(item => {
-        return { ...item.data(), id: item.id }
-      }),
-    )
-    setLoading(false)
-  }
   useEffect(() => {
-    fetchProduct()
+    dispatch(getProducts())
   }, [])
 
-  const searchByName = data => {
-    setFilteredProducts(
-      data.filter(product => {
-        return product.name.toLowerCase().includes(search.toLowerCase())
-      }),
-    )
-  }
   useEffect(() => {
-    searchByName(sort ? filteredProducts : products)
+    dispatch(filterProducts(sort, search))
   }, [search])
 
-  const sortData = async sortBy => {
-    if (!sortBy) {
-      setFilteredProducts(products)
-    } else {
-      const response = db.collection("/products").orderBy(sortBy.field, sortBy.direction)
-      const data = await response.get()
-      const parsed = data.docs.map(item => {
-        return { ...item.data(), id: item.id }
-      })
-
-      if (search) {
-        searchByName(parsed)
-      } else {
-        setFilteredProducts(parsed)
-      }
-    }
-  }
-
   useEffect(() => {
-    sortData(sort)
+    dispatch(sortProducts(sort, search))
   }, [sort])
 
   return (
