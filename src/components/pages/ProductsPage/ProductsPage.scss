@@ -1,5 +1,16 @@
+@import "../../../colors.scss";
+
 .products-page-container {
   width: calc(100vw - 200px);
   padding: 0px 20px 20px 20px;
   min-height: calc(100vh - 100px);
+  @media screen and (max-width: 960px) {
+    width: 100%;
+  }
+}
+.title-wrapper {
+  font-size: 14px;
+  color: $lightGrey;
+  font-weight: bold;
+  padding-bottom: 10px;
 }

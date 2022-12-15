@@ -1,14 +1,15 @@
 import "./SideBar.scss"
 
 import classNames from "classnames"
+import PropTypes from "prop-types"
 import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router"
 
 import { db } from "../../../firebase-config"
-import ImageWrapper from "../ImageWrapper"
-import SvgIcon from "../SvgIcon"
+import ImageWrapper from "../../atoms/ImageWrapper"
+import SvgIcon from "../../atoms/SvgIcon"
 
-const SideBar = () => {
+const SideBar = ({ isMobile }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const [user, setUser] = useState([])
@@ -53,26 +54,30 @@ const SideBar = () => {
     },
   ]
 
+  const isMobileClass = classNames("sidebar-wrapper", { isMobile })
+
   return (
     <div className="sidebar-container">
-      <div className="user-wrapper">
-        {!loading && (
-          <>
-            <ImageWrapper
-              image={user.image}
-              alt="product"
-              width={56}
-              height={56}
-              className="user-image"
-            />
-            <div className="user-name">
-              {user.first_name} {user.last_name}
-            </div>
-          </>
-        )}
-      </div>
+      {!isMobile && (
+        <div className="user-wrapper">
+          {!loading && (
+            <>
+              <ImageWrapper
+                image={user.image}
+                alt="product"
+                width={56}
+                height={56}
+                className="user-image"
+              />
+              <div className="user-name">
+                {user.first_name} {user.last_name}
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
-      <div className="sidebar-wrapper">
+      <div className={isMobileClass}>
         {sidebarData.map((item, index) => {
           const isLast = index === sidebarData.length - 1
           const checkIfActive = obj => {
@@ -82,8 +87,9 @@ const SideBar = () => {
             return false
           }
           const sidebarItemClass = classNames("item-wrapper", {
-            isLast,
+            isLast: !isMobile && isLast,
             active: checkIfActive(item),
+            isMobile,
           })
           return (
             <div
@@ -98,7 +104,7 @@ const SideBar = () => {
                 }
               }}
             >
-              <div className="item-icon">{item.icon}</div>
+              {!isMobile && <div className="item-icon">{item.icon}</div>}
               <div className="item-title">{item.title}</div>
             </div>
           )
@@ -106,6 +112,13 @@ const SideBar = () => {
       </div>
     </div>
   )
+}
+
+SideBar.propTypes = {
+  isMobile: PropTypes.bool,
+}
+SideBar.defaultProps = {
+  isMobile: false,
 }
 
 export default SideBar

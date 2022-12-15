@@ -1,0 +1,27 @@
+@import "../../../colors.scss";
+
+.off-canvas-container {
+  background-color: #00000070;
+  inset: 0;
+  overflow-y: hidden;
+  position: fixed;
+  z-index: 50;
+  visibility: hidden;
+  transition: visibility 0.2s linear;
+  .off-canvas-modal {
+    background-color: $white;
+    height: 100%;
+    margin-left: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 200px;
+    transform: translateX(120%);
+    transition: all 0.2s linear;
+  }
+  &.isOpen {
+    visibility: visible;
+    .off-canvas-modal {
+      transform: translateX(0);
+    }
+  }
+}

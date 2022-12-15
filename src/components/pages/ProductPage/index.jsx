@@ -50,24 +50,24 @@ const SellerPage = () => {
             <div className="title top">Specifications:</div>
             <div className="titles-wrapper">
               <div className="info-wrapper">
-                Operating system:<div className="info">{extendedProduct.operating_system}</div>
+                Operating system:<div className="info">{extendedProduct?.operating_system}</div>
               </div>
               <div className="info-wrapper">
-                Processor:<div className="info">{extendedProduct.processor}</div>
+                Processor:<div className="info">{extendedProduct?.processor}</div>
               </div>
               <div className="info-wrapper">
-                Memory:<div className="info">{extendedProduct.memory}GB</div>
+                Memory:<div className="info">{extendedProduct?.memory}GB</div>
               </div>
             </div>
             <div className="titles-wrapper">
               <div className="info-wrapper">
-                Storage:<div className="info">{extendedProduct.storage}</div>
+                Storage:<div className="info">{extendedProduct?.storage}</div>
               </div>
               <div className="info-wrapper">
                 Display:<div className="info">{extendedProduct?.display}</div>
               </div>
               <div className="info-wrapper">
-                Graphics:<div className="info">{extendedProduct.graphics}</div>
+                Graphics:<div className="info">{extendedProduct?.graphics}</div>
               </div>
             </div>
           </div>

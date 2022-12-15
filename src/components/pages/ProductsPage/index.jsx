@@ -2,22 +2,26 @@ import "./ProductsPage.scss"
 
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useMediaQuery } from "react-responsive"
 import { useNavigate } from "react-router"
 
 import { filterProducts, getProducts, sortProducts } from "../../../redux/products/productsActions"
 import GridRowItem from "../../atoms/GridRowItem"
 import ImageWrapper from "../../atoms/ImageWrapper"
 import Loading from "../../atoms/Loading"
-import RowWrapper from "../../atoms/RowWrapper"
+import MobileTableItem from "../../atoms/MobileTableItem"
 import SvgIcon from "../../atoms/SvgIcon"
 import TextInput from "../../atoms/TextInput"
 import RegularLayout from "../../layouts/RegularLayout"
+import GridTable from "../../organisms/GridTable"
 
 const ProductsPage = () => {
   const [filteredProducts, loading] = useSelector(({ products }) => [
     products.filteredProducts,
     products.loading,
   ])
+  const isMobile = useMediaQuery({ query: "(max-width: 960px)" })
+
   const [sort, setSort] = useState(undefined)
   const navigate = useNavigate()
 
@@ -64,6 +68,40 @@ const ProductsPage = () => {
       }
     })
   }
+
+  const parseMobileData = () => {
+    return filteredProducts.map(item => {
+      return {
+        id: item.id,
+        rows: [
+          { name: "Name:", value: item.name },
+          { name: "In Stock:", value: item.in_stock },
+          { name: "Price:", value: `$${item.price}` },
+        ],
+      }
+    })
+  }
+
+  const getBody = () => {
+    if (loading) {
+      return <Loading className="loading" />
+    }
+    if (isMobile) {
+      return parseMobileData().map(item => {
+        return <MobileTableItem data={item} onTableClick={() => navigate(`/products/${item.id}`)} />
+      })
+    }
+    return (
+      <GridTable
+        headData={productsHeadData}
+        highlightedHeadItem="List of Products"
+        bodyData={parseBodyData(filteredProducts)}
+        className="table-page "
+        onRowClick={item => navigate(`/products/${item.id}`)}
+        sort={sort}
+      />
+    )
+  }
   const [search, setSearch] = useState("")
 
   useEffect(() => {
@@ -87,19 +125,10 @@ const ProductsPage = () => {
           }}
           placeholder="Search by name"
           icon="search"
+          withIcon
         />
-        {loading ? (
-          <Loading className="loading" />
-        ) : (
-          <RowWrapper
-            headData={productsHeadData}
-            highlightedHeadItem="List of Products"
-            bodyData={parseBodyData(filteredProducts)}
-            className="table-page "
-            onRowClick={item => navigate(`/products/${item.id}`)}
-            sort={sort}
-          />
-        )}
+        {isMobile && <div className="title-wrapper">LIST OF PRODUCTS</div>}
+        {getBody()}
       </div>
     </RegularLayout>
   )

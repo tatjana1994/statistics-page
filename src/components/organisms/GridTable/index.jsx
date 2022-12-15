@@ -1,12 +1,12 @@
-import "./RowWrapper.scss"
+import "./GridTable.scss"
 
 import classNames from "classnames"
 import PropTypes from "prop-types"
 import React from "react"
 
-import TableHeadItem from "../TableHeadItem"
+import TableHeadItem from "../../atoms/TableHeadItem"
 
-const RowWrapper = ({ headData, highlightedHeadItem, className, sort, bodyData, onRowClick }) => {
+const GridTable = ({ headData, highlightedHeadItem, className, sort, bodyData, onRowClick }) => {
   const tableClass = classNames("table-container", className)
   return (
     <div className={tableClass}>
@@ -43,7 +43,7 @@ const RowWrapper = ({ headData, highlightedHeadItem, className, sort, bodyData, 
   )
 }
 
-RowWrapper.propTypes = {
+GridTable.propTypes = {
   bodyData: PropTypes.instanceOf(Array),
   headData: PropTypes.instanceOf(Array),
   highlightedHeadItem: PropTypes.string,
@@ -52,7 +52,7 @@ RowWrapper.propTypes = {
   onRowClick: PropTypes.func,
 }
 
-RowWrapper.defaultProps = {
+GridTable.defaultProps = {
   bodyData: [],
   headData: [],
   highlightedHeadItem: "",
@@ -61,4 +61,4 @@ RowWrapper.defaultProps = {
   onRowClick: () => {},
 }
 
-export default RowWrapper
+export default GridTable

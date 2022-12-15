@@ -5,9 +5,9 @@ import React from "react"
 
 import SvgIcon from "../SvgIcon"
 
-const TextInput = ({ label, placeholder, inputType, icon, autoComplete, onChange }) => {
+const TextInput = ({ label, placeholder, inputType, icon, autoComplete, onChange, withIcon }) => {
   return (
-    <div className="search-container">
+    <div className="text-input-container">
       <div className="label">{label}</div>
       <input
         onChange={onChange}
@@ -16,7 +16,7 @@ const TextInput = ({ label, placeholder, inputType, icon, autoComplete, onChange
         className="input-style"
         type={inputType}
       />
-      <SvgIcon className="search-icon" icon={icon} width={20} height={20} />
+      {withIcon && <SvgIcon className="input-icon" icon={icon} width={20} height={20} />}
     </div>
   )
 }
@@ -28,6 +28,7 @@ TextInput.propTypes = {
   icon: PropTypes.string,
   autoComplete: PropTypes.string,
   onChange: PropTypes.func,
+  withIcon: PropTypes.bool,
 }
 
 TextInput.defaultProps = {
@@ -37,6 +38,7 @@ TextInput.defaultProps = {
   icon: "",
   autoComplete: "",
   onChange: () => {},
+  withIcon: false,
 }
 
 export default TextInput

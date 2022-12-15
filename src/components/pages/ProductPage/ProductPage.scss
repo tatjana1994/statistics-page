@@ -4,6 +4,9 @@
   width: calc(100vw - 200px);
   padding: 0px 20px 20px 20px;
   min-height: calc(100vh - 100px);
+  @media screen and (max-width: 960px) {
+    width: 100%;
+  }
   .children-wrapper {
     display: flex;
   }
@@ -19,22 +22,39 @@
   }
   .product-image {
     margin-right: 40px;
+    @media screen and (max-width: 960px) {
+      margin-right: 0px;
+    }
   }
   .product-name {
     font-size: 22px;
     font-weight: bold;
     padding-bottom: 20px;
+    @media screen and (max-width: 960px) {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
   }
   .image-and-description-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media screen and (max-width: 960px) {
+      display: flex;
+      flex-direction: column;
+    }
   }
   .title {
     padding-bottom: 20px;
     font-size: 16px;
     font-weight: bold;
-    width: 100px;
+    width: 100%;
+    @media screen and (max-width: 960px) {
+      display: flex;
+      justify-content: center;
+    }
+
     &.top {
       padding-top: 20px;
     }
@@ -46,21 +66,51 @@
     max-width: 500px;
     text-align: justify;
     margin-right: 40px;
+    @media screen and (max-width: 960px) {
+      margin-right: 0px;
+      padding-top: 10px;
+    }
+    @media screen and (max-width: 550px) {
+      display: flex;
+      text-align: center;
+    }
   }
   .titles-wrapper {
     display: flex;
     justify-content: space-between;
     padding: 20px 0px;
+    @media screen and (max-width: 960px) {
+      display: flex;
+      justify-content: space-between;
+    }
+    @media screen and (max-width: 550px) {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
+      padding: 0px;
+    }
   }
   .info-wrapper {
-    width: 150px;
+    width: 130px;
     font-size: 16px;
     color: $grey050;
+    @media screen and (max-width: 550px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+    }
   }
   .info {
     padding-top: 20px;
     font-weight: bold;
     font-size: 18px;
+    @media screen and (max-width: 550px) {
+      display: flex;
+      padding: 5px;
+      text-align: center;
+    }
   }
 
   .price {
@@ -74,5 +124,8 @@
     color: $white;
     display: flex;
     justify-content: center;
+    @media screen and (max-width: 960px) {
+      margin: 20px 0px;
+    }
   }
 }

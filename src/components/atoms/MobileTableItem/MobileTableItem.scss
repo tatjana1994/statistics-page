@@ -1,0 +1,39 @@
+@import "../../../colors.scss";
+
+.mobile-table-item-container {
+  margin-bottom: 20px;
+  .table-wrapper {
+    background-color: $white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+  }
+  .row-item-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 10px;
+    height: 40px;
+    align-items: center;
+    border-bottom: 1px solid $lightBlue050;
+  }
+  .row-item-left {
+    color: $grey080;
+    width: 80px;
+    white-space: nowrap;
+    @media screen and (max-width: 580px) {
+      font-size: 13px;
+    }
+  }
+  .row-item-right {
+    color: $grey080;
+    font-weight: 600;
+    padding-left: 20px;
+    display: flex;
+    justify-content: end;
+
+    text-align: end;
+    @media screen and (max-width: 580px) {
+      font-size: 13px;
+    }
+  }
+}

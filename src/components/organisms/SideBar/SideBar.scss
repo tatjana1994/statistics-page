@@ -17,6 +17,10 @@
     display: flex;
     align-items: center;
     height: 60px;
+    width: 100%;
+    &.isMobile {
+      justify-content: center;
+    }
     &.isLast {
       position: absolute;
       bottom: 30px;
@@ -52,16 +56,18 @@
     border-bottom-right-radius: 6px;
   }
   .user-name {
-    padding: 20px 0px 10px 0px;
-    font-weight: bold;
     color: $white;
+    font-weight: bold;
+    padding-top: 10px;
   }
-  .user-image {
-    width: 46px;
-    height: 46px;
-    img {
-      border-radius: 50%;
-      background-color: $white;
-    }
+}
+.user-image {
+  display: flex;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  img {
+    border-radius: 50%;
+    background-color: $white;
   }
 }

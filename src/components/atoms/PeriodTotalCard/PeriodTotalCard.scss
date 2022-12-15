@@ -11,6 +11,19 @@
   flex-direction: column;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  @media screen and (max-width: 1450px) {
+    margin-top: 20px;
+    width: 500px;
+  }
+  @media screen and (max-width: 650px) {
+    margin-top: 20px;
+    width: 300px;
+  }
+  @media screen and (max-width: 400px) {
+    margin-top: 20px;
+    width: 250px;
+  }
+
   .info-box-wrapper {
     height: 70px;
     border-top-left-radius: 6px;
@@ -46,6 +59,9 @@
     color: $primaryColor;
     font-weight: bold;
     padding-left: 20px;
+    @media screen and (max-width: 1200px) {
+      font-size: 20px;
+    }
   }
   .value-percentage-wrapper {
     display: flex;

@@ -16,7 +16,7 @@ const BarChart = ({ seriesData, categories, titleText, subtitleText, titleColor,
         background: "#fff",
         height: 240,
         width: "100%",
-        type: "line",
+        type: "bar",
 
         zoom: {
           enabled: false,

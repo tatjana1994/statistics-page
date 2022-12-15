@@ -19,6 +19,9 @@
       minmax(150px, 0.4fr)
       minmax(100px, 0.2fr)
       20px;
+    @media screen and (max-width: 1450px) {
+      margin: 20px 0px 0px 0px;
+    }
   }
   .row-container {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
