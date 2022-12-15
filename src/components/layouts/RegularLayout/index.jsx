@@ -2,14 +2,17 @@ import "./RegularLayout.scss"
 
 import PropTypes from "prop-types"
 import React from "react"
+import { useMediaQuery } from "react-responsive"
 
 import Header from "../../atoms/Header"
-import SideBar from "../../atoms/SideBar"
+import SideBar from "../../organisms/SideBar"
+import TopBar from "../../organisms/TopBar"
 
 const RegularLayout = ({ children, title }) => {
+  const isMobile = useMediaQuery({ query: "(max-width: 960px)" })
   return (
     <div className="regular-layout-constainer">
-      <SideBar />
+      {!isMobile ? <SideBar /> : <TopBar />}
       <div className="header-and-content-wrapper">
         <Header title={title} />
         {children}

@@ -1,15 +1,17 @@
 @import "../../../colors.scss";
 
-.search-container {
+.text-input-container {
   display: flex;
-  width: 425px;
+  min-width: 280px;
+  max-width: 450px;
   position: relative;
   flex-direction: column;
   position: relative;
   margin-bottom: 20px;
   margin-top: 10px;
   .input-style {
-    min-width: 425px;
+    min-width: 280px;
+    max-width: 450px;
     padding-left: 16px;
     height: 45px;
     border-radius: 6px;
@@ -32,7 +34,7 @@
     background-color: $grey030;
     color: $grey080;
   }
-  .search-icon {
+  .input-icon {
     position: absolute;
     right: 10px;
     top: 20px;

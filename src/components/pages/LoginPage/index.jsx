@@ -57,18 +57,21 @@ const LoginPage = () => {
         }}
         className="form"
       >
-        <TextInput
-          label="Email"
-          placeholder="Enter email"
-          field="email"
-          inputType="email"
-          onChange={e => {
-            setEmail(e.target.value)
-            if (error) {
-              setError("")
-            }
-          }}
-        />
+        <div className="form-input">
+          <TextInput
+            label="Email"
+            placeholder="Enter email"
+            field="email"
+            inputType="email"
+            onChange={e => {
+              setEmail(e.target.value)
+              if (error) {
+                setError("")
+              }
+            }}
+          />
+        </div>
+
         <div className="form-input">
           <TextInput
             label="Password"

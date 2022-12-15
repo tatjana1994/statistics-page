@@ -3,6 +3,8 @@ import "./DashboardPage.scss"
 import _ from "lodash"
 import React, { useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useMediaQuery } from "react-responsive"
+import { useNavigate } from "react-router"
 
 import { getProducts } from "../../../redux/products/productsActions"
 import { getSellers } from "../../../redux/sellers/sellersActions"
@@ -13,13 +15,15 @@ import GridRowItem from "../../atoms/GridRowItem"
 import ImageWrapper from "../../atoms/ImageWrapper"
 import LineChart from "../../atoms/LineChart"
 import Loading from "../../atoms/Loading"
+import MobileTableItem from "../../atoms/MobileTableItem"
 import PeriodTotalCard from "../../atoms/PeriodTotalCard"
 import PieChart from "../../atoms/PieChart"
-import RowWrapper from "../../atoms/RowWrapper"
 import RegularLayout from "../../layouts/RegularLayout"
+import GridTable from "../../organisms/GridTable"
 
 const DashboardPage = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const [allProducts, allSellers, allTotals, productsLoading, sellersLoading, totalsLoading] =
     useSelector(({ products, sellers, totals }) => [
@@ -35,6 +39,7 @@ const DashboardPage = () => {
     () => productsLoading || sellersLoading || totalsLoading,
     [productsLoading, sellersLoading, totalsLoading],
   )
+  const isMobile = useMediaQuery({ query: "(max-width: 960px)" })
 
   useEffect(() => {
     dispatch(getProducts())
@@ -108,6 +113,68 @@ const DashboardPage = () => {
     return data.map(item => item[field])
   }
 
+  const parseMobileSellersData = () => {
+    return topFiveSellers.map(item => {
+      return {
+        id: item.id,
+        rows: [
+          { name: "Name:", value: `${item.first_name} ${item.last_name}` },
+          { name: "In Stock:", value: item.items_sold },
+          { name: "Price:", value: `$${item.total_profit}` },
+        ],
+      }
+    })
+  }
+
+  const parseMobileProductsData = () => {
+    return topFiveProducts.map(item => {
+      return {
+        id: item.id,
+        rows: [
+          { name: "Name:", value: item.name },
+          { name: "In Stock:", value: item.in_stock },
+          { name: "Price:", value: `$${item.price}` },
+        ],
+      }
+    })
+  }
+
+  const getSellersBody = () => {
+    if (loading) {
+      return <Loading className="loading" />
+    }
+    if (isMobile) {
+      return parseMobileSellersData().map(item => {
+        return <MobileTableItem data={item} onTableClick={() => navigate(`/sellers/${item.id}`)} />
+      })
+    }
+    return (
+      <GridTable
+        bodyData={parseBodyData(topFiveSellers)}
+        headData={sellersHeadData}
+        highlightedHeadItem="Best Sellers"
+      />
+    )
+  }
+
+  const getProductsBody = () => {
+    if (loading) {
+      return <Loading className="loading" />
+    }
+    if (isMobile) {
+      return parseMobileProductsData().map(item => {
+        return <MobileTableItem data={item} onTableClick={() => navigate(`/products/${item.id}`)} />
+      })
+    }
+    return (
+      <GridTable
+        bodyData={parseBodyDataProduct(topFiveProducts)}
+        headData={productsHeadData}
+        highlightedHeadItem="Best Selling"
+      />
+    )
+  }
+
   return (
     <RegularLayout title="Dashboard">
       {loading ? (
@@ -166,15 +233,16 @@ const DashboardPage = () => {
                 />
               </div>
             </div>
-
-            <ChartWrapper
-              seriesData={[allTotals[0]?.total_online_earning, allTotals[0]?.total_store_earning]}
-              colors={["#6684fe", "#ec68a7"]}
-              title={`Total Earnings  
+            <div className="chart-wrapper">
+              <ChartWrapper
+                seriesData={[allTotals[0]?.total_online_earning, allTotals[0]?.total_store_earning]}
+                colors={["#6684fe", "#ec68a7"]}
+                title={`Total Earnings  
               Online/Store`}
-              subtitle={`From ${allTotals[0]?.date}`}
-              labels={["Online", "Store"]}
-            />
+                subtitle={`From ${allTotals[0]?.date}`}
+                labels={["Online", "Store"]}
+              />
+            </div>
           </div>
 
           <div className="bottom-row-wrapper">
@@ -196,23 +264,20 @@ const DashboardPage = () => {
               ]}
               categories={["Jul", "Aug", "Sep", "Oct"]}
             />
-
-            <ChartWrapper
-              seriesData={[allTotals[0]?.total_online_sales, allTotals[0]?.total_store_sales]}
-              colors={["#E65F5C", "#B5D99C"]}
-              title={`Total Sales 
+            <div className="chart-wrapper">
+              <ChartWrapper
+                seriesData={[allTotals[0]?.total_online_sales, allTotals[0]?.total_store_sales]}
+                colors={["#E65F5C", "#B5D99C"]}
+                title={`Total Sales 
                        Online/Store`}
-              subtitle={`From ${allTotals[0]?.date}`}
-              labels={["Online", "Store"]}
-            />
+                subtitle={`From ${allTotals[0]?.date}`}
+                labels={["Online", "Store"]}
+              />
+            </div>
           </div>
 
           <div className="bottom-row-wrapper">
-            <RowWrapper
-              bodyData={parseBodyData(topFiveSellers)}
-              headData={sellersHeadData}
-              highlightedHeadItem="Best Sellers"
-            />
+            {getSellersBody()}
             <PieChart
               seriesData={getFiveItems(topFiveSellers, "total_profit")}
               labels={getFiveItems(topFiveSellers, "first_name")}
@@ -222,12 +287,7 @@ const DashboardPage = () => {
           </div>
 
           <div className="bottom-row-wrapper">
-            <RowWrapper
-              bodyData={parseBodyDataProduct(topFiveProducts)}
-              headData={productsHeadData}
-              highlightedHeadItem="Best Selling"
-            />
-
+            {getProductsBody()}
             <PieChart
               seriesData={getFiveItems(topFiveProducts, "sold_items")}
               labels={getFiveItems(topFiveProducts, "name")}

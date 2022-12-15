@@ -2,22 +2,25 @@ import "./SellersPage.scss"
 
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useMediaQuery } from "react-responsive"
 import { useNavigate } from "react-router"
 
 import { filterSellers, getSellers, sortSellers } from "../../../redux/sellers/sellersActions"
 import GridRowItem from "../../atoms/GridRowItem"
 import ImageWrapper from "../../atoms/ImageWrapper"
 import Loading from "../../atoms/Loading"
-import RowWrapper from "../../atoms/RowWrapper"
+import MobileTableItem from "../../atoms/MobileTableItem"
 import SvgIcon from "../../atoms/SvgIcon"
 import TextInput from "../../atoms/TextInput"
 import RegularLayout from "../../layouts/RegularLayout"
+import GridTable from "../../organisms/GridTable"
 
 const SellersPage = () => {
   const [filteredSellers, loading] = useSelector(({ sellers }) => [
     sellers.filteredSellers,
     sellers.loading,
   ])
+  const isMobile = useMediaQuery({ query: "(max-width: 960px)" })
 
   const dispatch = useDispatch()
   const [sort, setSort] = useState(undefined)
@@ -79,6 +82,39 @@ const SellersPage = () => {
     dispatch(sortSellers(sort, search))
   }, [sort])
 
+  const parseMobileData = () => {
+    return filteredSellers.map(item => {
+      return {
+        id: item.id,
+        rows: [
+          { name: "Name:", value: `${item.first_name} ${item.last_name}` },
+          { name: "In Stock:", value: item.items_sold },
+          { name: "Price:", value: `$${item.total_profit}` },
+        ],
+      }
+    })
+  }
+
+  const getBody = () => {
+    if (loading) {
+      return <Loading className="loading" />
+    }
+    if (isMobile) {
+      return parseMobileData().map(item => {
+        return <MobileTableItem data={item} onTableClick={() => navigate(`/sellers/${item.id}`)} />
+      })
+    }
+    return (
+      <GridTable
+        headData={sellersHeadData}
+        highlightedHeadItem="All Sellers"
+        className="table-page"
+        bodyData={parseBodyData(filteredSellers)}
+        sort={sort}
+        onRowClick={item => navigate(`/sellers/${item.id}`)}
+      />
+    )
+  }
   return (
     <RegularLayout title="Sellers">
       <div className="sellers-page-container">
@@ -88,19 +124,10 @@ const SellersPage = () => {
           }}
           placeholder="Search by name"
           icon="search"
+          withIcon
         />
-        {loading ? (
-          <Loading className="loading" />
-        ) : (
-          <RowWrapper
-            headData={sellersHeadData}
-            highlightedHeadItem="All Sellers"
-            className="table-page"
-            bodyData={parseBodyData(filteredSellers)}
-            sort={sort}
-            onRowClick={item => navigate(`/sellers/${item.id}`)}
-          />
-        )}
+        {isMobile && <div className="title-wrapper">ALL SELLERS</div>}
+        {getBody()}
       </div>
     </RegularLayout>
   )

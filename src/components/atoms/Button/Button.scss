@@ -2,9 +2,14 @@
 
 .button-container {
   margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   .button {
     background-color: $primaryColor;
-    min-width: 425px;
+    min-width: 280px;
+    max-width: 450px;
+    width: 100%;
     height: 45px;
     border-radius: 6px;
     cursor: pointer;

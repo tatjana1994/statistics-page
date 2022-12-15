@@ -1,0 +1,24 @@
+@import "../../../colors.scss";
+
+.topbar-container {
+  height: 60px;
+  background-color: $primaryColor;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  .user-wrapper {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+  }
+  .user-name {
+    color: $white;
+    font-weight: bold;
+  }
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+    cursor: pointer;
+  }
+}
