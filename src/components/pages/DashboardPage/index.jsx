@@ -144,8 +144,14 @@ const DashboardPage = () => {
       return <Loading className="loading" />
     }
     if (isMobile) {
-      return parseMobileSellersData().map(item => {
-        return <MobileTableItem data={item} onTableClick={() => navigate(`/sellers/${item.id}`)} />
+      return parseMobileSellersData().map((item, index) => {
+        return (
+          <MobileTableItem
+            key={index}
+            data={item}
+            onTableClick={() => navigate(`/sellers/${item.id}`)}
+          />
+        )
       })
     }
     return (
@@ -162,8 +168,14 @@ const DashboardPage = () => {
       return <Loading className="loading" />
     }
     if (isMobile) {
-      return parseMobileProductsData().map(item => {
-        return <MobileTableItem data={item} onTableClick={() => navigate(`/products/${item.id}`)} />
+      return parseMobileProductsData().map((item, index) => {
+        return (
+          <MobileTableItem
+            key={index}
+            data={item}
+            onTableClick={() => navigate(`/products/${item.id}`)}
+          />
+        )
       })
     }
     return (
@@ -218,7 +230,10 @@ const DashboardPage = () => {
                   colors={["#6785ff"]}
                   categories={["Jul", "Aug", "Sep", "Oct"]}
                   seriesData={[
-                    { data: allTotals[0]?.total_earnings_monthly, name: "Total Earning" },
+                    {
+                      data: allTotals[0]?.total_earnings_monthly,
+                      name: "Total Earning",
+                    },
                   ]}
                 />
                 <BarChart
@@ -227,7 +242,10 @@ const DashboardPage = () => {
                   colors={["#eaaa53"]}
                   subtitleText="From Jul - Oct 2022"
                   seriesData={[
-                    { data: allTotals[0]?.total_online_sales_monthly, name: "Total Online Sale" },
+                    {
+                      data: allTotals[0]?.total_online_sales_monthly,
+                      name: "Total Online Sale",
+                    },
                   ]}
                   categories={["Jul", "Aug", "Sep", "Oct"]}
                 />
@@ -252,7 +270,12 @@ const DashboardPage = () => {
               subtitle="From Jul - Oct 2022"
               colors={["#20b945"]}
               categories={["Jul", "Aug", "Sep", "Oct"]}
-              seriesData={[{ data: allTotals[0]?.total_sales_monthly, name: "Total Sale" }]}
+              seriesData={[
+                {
+                  data: allTotals[0]?.total_sales_monthly,
+                  name: "Total Sale",
+                },
+              ]}
             />
             <BarChart
               titleText="Total Store Sales"
@@ -260,7 +283,10 @@ const DashboardPage = () => {
               colors={["#c4292e"]}
               subtitleText="From Jul - Oct 2022"
               seriesData={[
-                { data: allTotals[0]?.total_store_sales_monthly, name: "Total Store Sale" },
+                {
+                  data: allTotals[0]?.total_store_sales_monthly,
+                  name: "Total Store Sale",
+                },
               ]}
               categories={["Jul", "Aug", "Sep", "Oct"]}
             />

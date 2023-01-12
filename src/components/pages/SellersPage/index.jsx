@@ -100,8 +100,14 @@ const SellersPage = () => {
       return <Loading className="loading" />
     }
     if (isMobile) {
-      return parseMobileData().map(item => {
-        return <MobileTableItem data={item} onTableClick={() => navigate(`/sellers/${item.id}`)} />
+      return parseMobileData().map((item, index) => {
+        return (
+          <MobileTableItem
+            key={index}
+            data={item}
+            onTableClick={() => navigate(`/sellers/${item.id}`)}
+          />
+        )
       })
     }
     return (

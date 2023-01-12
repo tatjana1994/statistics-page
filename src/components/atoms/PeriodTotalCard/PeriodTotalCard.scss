@@ -2,8 +2,8 @@
 
 .total-card-container {
   display: flex;
-  min-width: 220px;
-  max-width: 500px;
+  min-width: 160px;
+  max-width: 650px;
   flex: 1;
   height: 140px;
   background-color: $white;
@@ -11,7 +11,7 @@
   flex-direction: column;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  @media screen and (max-width: 1450px) {
+  @media screen and (max-width: 1200px) {
     margin-top: 20px;
     width: 500px;
   }
@@ -42,6 +42,17 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    @media screen and (max-width: 1350px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    @media screen and (max-width: 1200px) {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
   .total-card-title {
     color: $primaryColor;
@@ -65,7 +76,7 @@
   }
   .value-percentage-wrapper {
     display: flex;
-    padding-right: 16px;
+    padding-right: 4px;
   }
   .value-percentage {
     padding-left: 6px;

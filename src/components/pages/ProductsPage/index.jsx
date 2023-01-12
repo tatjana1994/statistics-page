@@ -87,8 +87,14 @@ const ProductsPage = () => {
       return <Loading className="loading" />
     }
     if (isMobile) {
-      return parseMobileData().map(item => {
-        return <MobileTableItem data={item} onTableClick={() => navigate(`/products/${item.id}`)} />
+      return parseMobileData().map((item, index) => {
+        return (
+          <MobileTableItem
+            key={index}
+            data={item}
+            onTableClick={() => navigate(`/products/${item.id}`)}
+          />
+        )
       })
     }
     return (

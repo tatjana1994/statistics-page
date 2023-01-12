@@ -7,9 +7,9 @@ const MobileTableItem = ({ data, onTableClick }) => {
   return (
     <div className="mobile-table-item-container">
       <div role="button" onClick={onTableClick} className="table-wrapper">
-        {data.rows.map(item => {
+        {data.rows.map((item, index) => {
           return (
-            <div className="row-item-wrapper">
+            <div key={index} className="row-item-wrapper">
               <div className="row-item-left">{item.name}</div>
               <div className="row-item-right">{item.value}</div>
             </div>
@@ -21,11 +21,11 @@ const MobileTableItem = ({ data, onTableClick }) => {
 }
 
 MobileTableItem.propTypes = {
-  data: PropTypes.instanceOf(Array),
+  data: PropTypes.instanceOf(Object),
   onTableClick: PropTypes.func,
 }
 MobileTableItem.defaultProps = {
-  data: [],
+  data: {},
   onTableClick: () => {},
 }
 

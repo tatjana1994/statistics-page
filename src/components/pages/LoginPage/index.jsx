@@ -4,6 +4,14 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import React, { useState } from "react"
 import { useNavigate } from "react-router"
 
+import {
+  FIREBASE_INVALID_EMAIL,
+  FIREBASE_USER_NOT_FOUND,
+  FIREBASE_WRONG_PASSWORD,
+  INVALID_EMAIL,
+  INVALID_PASSWORD,
+  USER_NOT_FOUND,
+} from "../../../constants/errorMessages"
 import app from "../../../firebase-config"
 import Button from "../../atoms/Button"
 import SvgIcon from "../../atoms/SvgIcon"
@@ -34,14 +42,14 @@ const LoginPage = () => {
         }
       })
       .catch(e => {
-        if (e.message === "Firebase: Error (auth/wrong-password).") {
-          setError("Your password is incorrect")
+        if (e.message === FIREBASE_WRONG_PASSWORD) {
+          setError(INVALID_PASSWORD)
         }
-        if (e.message === "Firebase: Error (auth/invalid-email).") {
-          setError("Your email is incorrect")
+        if (e.message === FIREBASE_INVALID_EMAIL) {
+          setError(INVALID_EMAIL)
         }
-        if (e.message === "Firebase: Error (auth/user-not-found).") {
-          setError("No user found with the given credentials")
+        if (e.message === FIREBASE_USER_NOT_FOUND) {
+          setError(USER_NOT_FOUND)
         }
       })
   }

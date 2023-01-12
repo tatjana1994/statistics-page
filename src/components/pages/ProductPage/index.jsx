@@ -7,6 +7,7 @@ import { useParams } from "react-router"
 import { getExtendedProduct, getProduct } from "../../../redux/products/productsActions"
 import ImageWrapper from "../../atoms/ImageWrapper"
 import Loading from "../../atoms/Loading"
+import Specification from "../../atoms/Specification"
 import RegularLayout from "../../layouts/RegularLayout"
 
 const SellerPage = () => {
@@ -49,26 +50,14 @@ const SellerPage = () => {
             </div>
             <div className="title top">Specifications:</div>
             <div className="titles-wrapper">
-              <div className="info-wrapper">
-                Operating system:<div className="info">{extendedProduct?.operating_system}</div>
-              </div>
-              <div className="info-wrapper">
-                Processor:<div className="info">{extendedProduct?.processor}</div>
-              </div>
-              <div className="info-wrapper">
-                Memory:<div className="info">{extendedProduct?.memory}GB</div>
-              </div>
+              <Specification title="Operating system" value={extendedProduct?.operating_system} />
+              <Specification title="Processor" value={extendedProduct?.processor} />
+              <Specification title="Memory" value={`${extendedProduct?.memory}GB`} />
             </div>
             <div className="titles-wrapper">
-              <div className="info-wrapper">
-                Storage:<div className="info">{extendedProduct?.storage}</div>
-              </div>
-              <div className="info-wrapper">
-                Display:<div className="info">{extendedProduct?.display}</div>
-              </div>
-              <div className="info-wrapper">
-                Graphics:<div className="info">{extendedProduct?.graphics}</div>
-              </div>
+              <Specification title="Storage" value={extendedProduct?.storage} />
+              <Specification title="Display" value={extendedProduct?.display} />
+              <Specification title="Graphics" value={extendedProduct?.graphics} />
             </div>
           </div>
         </div>
